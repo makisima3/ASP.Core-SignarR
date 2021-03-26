@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "8Qb0brNFKo5hDqonoxg67xK1MqLwwGnbXTM73zYmaNRyCnLi738v23WN8HTM98fcXvHEF3ssCJG2t5TGOS+BeQ==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\maxim.aksenov\\source\\repos\\SignarRChat\\SignarRChat\\SignarRChat.SignarR.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\maxim.aksenov\\.nuget\\packages\\system.text.encodings.web\\5.0.0\\system.text.encodings.web.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
