@@ -17,6 +17,7 @@ namespace SignarRChat.SignalR
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSignalR();
+            services.AddControllers();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -28,9 +29,13 @@ namespace SignarRChat.SignalR
 
             app.UseRouting();
 
+
+
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapDefaultControllerRoute();
                 endpoints.MapHub<ChatHub>("/chat");
+                
             });
         }
     }

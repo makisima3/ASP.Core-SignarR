@@ -9,8 +9,6 @@ namespace SignalRChat.Domain
 
         public string Message { get; set; }
 
-        public byte[] _file { get; set; }
-
-        public string _fileName { get; set; }
+        public string GroupFilesId { get; set; }
     }
 }

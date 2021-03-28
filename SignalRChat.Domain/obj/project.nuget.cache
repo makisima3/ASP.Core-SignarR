@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "IX/vM6Gd6qOj/frGqpexVv9GNQz/PNaSJVfZf/mkn4RL7qwuQQV6ZN5/KwqHizwb7Ijxe5aN3FIsYwyLFCMe+Q==",
+  "dgSpecHash": "uZfWQbr3KYZbCvY33KrGDR4I16yGT8y4c6EdLKR67VjLuwiZdl8MuG15cRc+OP56/MfxJ6/xVY2CkgMCQg+ywQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\maxim.aksenov\\source\\repos\\SignarRChat\\SignalRChat.Domain\\SignalRChat.Domain.csproj",
+  "projectFilePath": "C:\\Users\\Zver\\source\\repos\\ASP.Core-SignarR\\SignalRChat.Domain\\SignalRChat.Domain.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

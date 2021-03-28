@@ -9,6 +9,15 @@
     <Grid>
         <TextBlock x:Name="namePlace" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="40" Width="123" FontSize="22"/>
         <TextBox x:Name="msgPlace" HorizontalAlignment="Left" IsReadOnly="True" Height="40" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="362" Margin="128,0,0,0"/>
-        <Image x:Name="img" HorizontalAlignment="Left" Height="145" VerticalAlignment="Top" Width="145" Margin="0,45,0,0"/>
+        <ScrollViewer Margin="0,50,183,0">
+            <UniformGrid Name="ImagesPlace" Columns="2">
+                <TextBlock></TextBlock>
+            </UniformGrid>
+        </ScrollViewer>
+        <ScrollViewer Margin="322,50,0,0">
+            <UniformGrid Name="FilesPlace" Columns="1">
+                
+            </UniformGrid>
+        </ScrollViewer>
     </Grid>
 </UserControl>

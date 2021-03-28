@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\maxim.aksenov\source\repos\SignarRChat\SignalRChat.Client\obj\Debug\netcoreapp3.1\
+C:\Users\Zver\source\repos\ASP.Core-SignarR\SignalRChat.Client\obj\Debug\netcoreapp3.1\
 SignalRChat.Client
 none
 false
 TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1;
-C:\Users\maxim.aksenov\source\repos\SignarRChat\SignalRChat.Client\App.xaml
-21615257724
+C:\Users\Zver\source\repos\ASP.Core-SignarR\SignalRChat.Client\App.xaml
+21877935036
 
-7-488517476
-208654908320
+7-533381086
+209770970392
 MainWindow.xaml;MessageView.xaml;
 
-False
+True
 

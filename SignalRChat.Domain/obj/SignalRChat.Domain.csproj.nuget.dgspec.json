@@ -1,25 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\maxim.aksenov\\source\\repos\\SignarRChat\\SignalRChat.Domain\\SignalRChat.Domain.csproj": {}
+    "C:\\Users\\Zver\\source\\repos\\ASP.Core-SignarR\\SignalRChat.Domain\\SignalRChat.Domain.csproj": {}
   },
   "projects": {
-    "C:\\Users\\maxim.aksenov\\source\\repos\\SignarRChat\\SignalRChat.Domain\\SignalRChat.Domain.csproj": {
+    "C:\\Users\\Zver\\source\\repos\\ASP.Core-SignarR\\SignalRChat.Domain\\SignalRChat.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\maxim.aksenov\\source\\repos\\SignarRChat\\SignalRChat.Domain\\SignalRChat.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\Zver\\source\\repos\\ASP.Core-SignarR\\SignalRChat.Domain\\SignalRChat.Domain.csproj",
         "projectName": "SignalRChat.Domain",
-        "projectPath": "C:\\Users\\maxim.aksenov\\source\\repos\\SignarRChat\\SignalRChat.Domain\\SignalRChat.Domain.csproj",
-        "packagesPath": "C:\\Users\\maxim.aksenov\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\maxim.aksenov\\source\\repos\\SignarRChat\\SignalRChat.Domain\\obj\\",
+        "projectPath": "C:\\Users\\Zver\\source\\repos\\ASP.Core-SignarR\\SignalRChat.Domain\\SignalRChat.Domain.csproj",
+        "packagesPath": "C:\\Users\\Zver\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Zver\\source\\repos\\ASP.Core-SignarR\\SignalRChat.Domain\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\maxim.aksenov\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\Zver\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -58,7 +54,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }
