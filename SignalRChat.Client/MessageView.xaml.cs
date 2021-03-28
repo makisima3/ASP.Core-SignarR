@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Microsoft.Win32;
+using SignalRChat.Domain;
 
 namespace SignalRChat.Client
 {
@@ -18,9 +11,68 @@ namespace SignalRChat.Client
     /// </summary>
     public partial class MessageView : UserControl
     {
-        public MessageView()
+        private readonly ChatMessage _message;
+
+        public MessageView(ChatMessage message)
         {
+            _message = message;
+            
+            namePlace.Text = message.Name;
+            msgPlace.Text = message.Message;
+            
             InitializeComponent();
         }
+
+        public void AddFile(string fileName)
+        {
+            if (IsImage(fileName))
+            {
+                var image = new Image
+                {
+                    Source = App.FileStorageService.DownloadImage(_message.FilesGroupId, fileName)
+                };
+
+                ImagesPlace.Children.Add(image);
+            }
+            else
+            {
+                var tb = new TextBlock
+                {
+                    TextWrapping = TextWrapping.Wrap, 
+                    Text = fileName
+                };
+                tb.MouseDown += (s, e) => OnLinkText_Click(_message.FilesGroupId, fileName);
+            }
+        }
+        
+        private void OnLinkText_Click(string id, string fileName)
+        {
+            var sfd = new SaveFileDialog()
+            {
+                FileName = fileName
+            };
+            
+            var result = sfd.ShowDialog();
+            if (!result.HasValue || !result.Value) 
+                return;
+            
+            var output = File.OpenWrite(sfd.FileName);
+            var input = App.FileStorageService.DownloadFile(id,fileName).Result;
+
+            input.CopyTo(output);
+
+            output.Close();
+            input.Close();
+        }
+        
+        private bool IsImage(string fileName)
+        {
+            fileName = fileName.ToLower();
+            return fileName.EndsWith("jpg") || 
+                   fileName.EndsWith("png") || 
+                   fileName.EndsWith("jpeg") || 
+                   fileName.EndsWith("bmp");
+        }
+
     }
 }
