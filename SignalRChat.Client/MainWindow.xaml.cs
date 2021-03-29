@@ -1,22 +1,12 @@
 ﻿using Microsoft.Win32;
-using SignalRChat.Client.Sirvices;
 using SignalRChat.Domain;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace SignalRChat.Client
 {
@@ -25,112 +15,69 @@ namespace SignalRChat.Client
     /// </summary>
     public partial class MainWindow : Window
     {
-        FileInfo[] selectedFile;
+        private List<FileInfo> _selectedFiles;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            SignalRChatSirvice.Instance.MessageRecived += Instance_MessageRecived;
+            App.ChatService.OnMessageReceived += OnMessageReceived;
         }
 
-        private void Instance_MessageRecived(ChatMessage msg)
+        private void OnMessageReceived(ChatMessage receivedMessage)
         {
-            MessageView view = new MessageView();
-            view.namePlace.Text = msg.Name;
-            view.msgPlace.Text = msg.Message;
+            var messageView = new MessageView(receivedMessage);
 
-            if (!string.IsNullOrEmpty(msg.GroupFilesId))
+            if (!string.IsNullOrEmpty(receivedMessage.FilesGroupId))
             {
-                var files = SignalRChatSirvice.Instance.GetFilesList(msg.GroupFilesId).Result;
-
-                foreach (var file in files)
-                {
-                    if (file.ToLower().EndsWith(".jpg") || file.ToLower().EndsWith(".png") || file.ToLower().EndsWith(".jpeg") || file.ToLower().EndsWith(".bmp"))
-                    {
-                        Image image = new Image();
-                        image.Source = SignalRChatSirvice.Instance.DownloadImage(msg.GroupFilesId, file);
-
-                        view.ImagesPlace.Children.Add(image);
-                    }
-                    else
-                    {
-                        TextBlock tb = new TextBlock();
-                        tb.TextWrapping = TextWrapping.Wrap;
-                        tb.Text = file;
-                        tb.MouseDown += (s, e) => Tb_MouseDown(s, e, msg.GroupFilesId, file);
-                    }
-
-                }
+                var fileNames = App.FileStorageService.GetFilesList(receivedMessage.FilesGroupId).Result;
+                fileNames.ForEach(file => messageView.AddFile(file));
             }
-
-            MsgPlace.Items.Add(view);
-
+            MsgPlace.Items.Add(messageView);
         }
 
-        private void Tb_MouseDown(object sender, MouseButtonEventArgs e, string id, string fileName)
+        private async void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.FileName = fileName;
-            var result = sfd.ShowDialog();
-            if (result.HasValue && result.Value)
+            if (App.ChatService.State != HubConnectionState.Connected)
             {
-                Stream output = File.OpenWrite(sfd.FileName);
-                Stream input = SignalRChatSirvice.Instance.DownloadFile(id,fileName).Result;
-
-                input.CopyTo(output);
-
-                output.Close();
-                input.Close();
-            }
-        }
-
-        private async void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (SignalRChatSirvice.Instance._connection.State != Microsoft.AspNetCore.SignalR.Client.HubConnectionState.Connected)
-            {
-                await SignalRChatSirvice.Instance.Connect();
+                MessageBox.Show(
+                    "Вы были отключены ранее!\nПопытка переподключения...",
+                    "Ошибка",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning
+                );
+                await App.ChatService.Connect();
             }
             await SendMsg();
         }
 
-        public async Task SendMsg()
-        {
-            try
-            {
-                string groupId = selectedFile.Length > 0 ? await SignalRChatSirvice.Instance.UploadFiles(selectedFile) : string.Empty;
-
-                ChatMessage msg = new ChatMessage()
-                {
-                    Name = name.Text,
-                    Message = message.Text,
-                    GroupFilesId = groupId
-                };
-
-                await SignalRChatSirvice.Instance.SendMessage(msg);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
-
         private void ChoseFile_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Multiselect = true;
+            var ofd = new OpenFileDialog
+            {
+                Multiselect = true
+            };
 
             var result = ofd.ShowDialog();
 
-            if (result.HasValue && result.Value)
-            {
-                selectedFile = new FileInfo[ofd.FileNames.Length];
+            if (!result.HasValue || !result.Value) 
+                return;
+            
+            _selectedFiles = ofd.FileNames.Select(file => new FileInfo(file)).ToList();
+        }
 
-                for (int i = 0; i < selectedFile.Length; i++)
-                {
-                    selectedFile[i] = new FileInfo((ofd.FileNames[i]));
-                }
-            }
+        private async Task SendMsg()
+        {
+            var filesGroupId = _selectedFiles.Count > 0 ? await App.FileStorageService.UploadFiles(_selectedFiles) : string.Empty;
+
+            var newMessage = new ChatMessage()
+            {
+                Name = name.Text,
+                Message = message.Text,
+                FilesGroupId = filesGroupId
+            };
+
+            await App.ChatService.SendMessage(newMessage);
         }
     }
 }

@@ -1,12 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR.Client;
-using SignalRChat.Client.Sirvices;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
+using SignalRChat.Client.Services;
 
 namespace SignalRChat.Client
 {
@@ -15,17 +9,20 @@ namespace SignalRChat.Client
     /// </summary>
     public partial class App : Application
     {
+        public const string Hostname = "http://localhost:5000";
+        public static SignalRChatService ChatService { get; private set; }
+        public static FileStorageService FileStorageService { get; private set; }
+        
         protected override void OnStartup(StartupEventArgs e)
         {
-            HubConnection connection = new HubConnectionBuilder()
-                .WithUrl("http://localhost:5000/chat")
+            var connection = new HubConnectionBuilder()
+                .WithUrl($"{Hostname}/chat")
                 .Build();
-
-            SignalRChatSirvice sirvice = new SignalRChatSirvice(connection);
-            if (sirvice._connection.State != HubConnectionState.Connected)
-            {
-                sirvice.Connect();
-            }
+            
+            ChatService = new SignalRChatService(connection);
+            ChatService.Connect().Wait();
+            
+            FileStorageService = new FileStorageService(Hostname);
         }
 
     }
