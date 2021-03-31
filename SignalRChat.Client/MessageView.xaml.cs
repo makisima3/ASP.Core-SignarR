@@ -29,7 +29,7 @@ namespace SignalRChat.Client
             {
                 var image = new Image
                 {
-                    Source = App.FileStorageService.DownloadImage(_message.FilesGroupId, fileName)
+                    Source = ServicesContainer.Instance.FileStorageService.DownloadImage(_message.FilesGroupId, fileName)
                 };
 
                 ImagesPlace.Children.Add(image);
@@ -57,7 +57,7 @@ namespace SignalRChat.Client
                 return;
             
             var output = File.OpenWrite(sfd.FileName);
-            var input = App.FileStorageService.DownloadFile(id,fileName).Result;
+            var input = ServicesContainer.Instance.FileStorageService.DownloadFile(id,fileName).Result;
 
             input.CopyTo(output);
 

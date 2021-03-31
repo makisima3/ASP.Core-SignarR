@@ -19,14 +19,14 @@ namespace SignalRChat.Client.Services
 
         public async Task<string> UploadFiles(IEnumerable<FileInfo> files)
         {
-
             using var client = new HttpClient();
             using var formData = new MultipartFormDataContent();
-
+            int n = 1;
             foreach (var file in files)
             {
                 var fileContent = new StreamContent(file.OpenRead());
-                formData.Add(fileContent, file.Name);
+                formData.Add(fileContent, $"file{n}", file.Name);
+                n += 1;
             }
 
             var response = await client.PostAsync($"{_hostname}/files", formData);

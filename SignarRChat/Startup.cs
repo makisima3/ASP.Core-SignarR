@@ -11,8 +11,8 @@ namespace SignarRChat.SignarR
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSignalR();
             services.AddControllers();
+            services.AddSignalR();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

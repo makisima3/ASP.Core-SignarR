@@ -18,9 +18,9 @@ namespace SignalRChat.Client.Services
         public HubConnectionState State => _connection.State;
         public event Action<ChatMessage> OnMessageReceived;
 
-        public SignalRChatService(HubConnection connection)
+        public SignalRChatService(string hostname)
         {
-            _connection = connection;
+            _connection = new HubConnectionBuilder().WithUrl($"{hostname}/chat").Build();
             _connection.On<ChatMessage>("ReceiveMessage", (message) => OnMessageReceived?.Invoke(message));
         }
 

@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace SignalRChat.Client
@@ -21,7 +20,7 @@ namespace SignalRChat.Client
         {
             InitializeComponent();
 
-            App.ChatService.OnMessageReceived += OnMessageReceived;
+            ServicesContainer.Instance.ChatService.OnMessageReceived += OnMessageReceived;
         }
 
         private void OnMessageReceived(ChatMessage receivedMessage)
@@ -30,7 +29,7 @@ namespace SignalRChat.Client
 
             if (!string.IsNullOrEmpty(receivedMessage.FilesGroupId))
             {
-                var fileNames = App.FileStorageService.GetFilesList(receivedMessage.FilesGroupId).Result;
+                var fileNames = ServicesContainer.Instance.FileStorageService.GetFilesList(receivedMessage.FilesGroupId).Result;
                 fileNames.ForEach(file => messageView.AddFile(file));
             }
             MsgPlace.Items.Add(messageView);
@@ -38,7 +37,7 @@ namespace SignalRChat.Client
 
         private async void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            if (App.ChatService.State != HubConnectionState.Connected)
+            if (ServicesContainer.Instance.ChatService.State != HubConnectionState.Connected)
             {
                 MessageBox.Show(
                     "Вы были отключены ранее!\nПопытка переподключения...",
@@ -46,7 +45,7 @@ namespace SignalRChat.Client
                     MessageBoxButton.OK,
                     MessageBoxImage.Warning
                 );
-                await App.ChatService.Connect();
+                await ServicesContainer.Instance.ChatService.Connect();
             }
             await SendMsg();
         }
@@ -68,7 +67,9 @@ namespace SignalRChat.Client
 
         private async Task SendMsg()
         {
-            var filesGroupId = _selectedFiles.Count > 0 ? await App.FileStorageService.UploadFiles(_selectedFiles) : string.Empty;
+            var hasFiles = _selectedFiles != null && _selectedFiles.Count > 0;
+            
+            var filesGroupId = hasFiles ? await ServicesContainer.Instance.FileStorageService.UploadFiles(_selectedFiles) : string.Empty;
 
             var newMessage = new ChatMessage()
             {
@@ -77,7 +78,7 @@ namespace SignalRChat.Client
                 FilesGroupId = filesGroupId
             };
 
-            await App.ChatService.SendMessage(newMessage);
+            await ServicesContainer.Instance.ChatService.SendMessage(newMessage);
         }
     }
 }
