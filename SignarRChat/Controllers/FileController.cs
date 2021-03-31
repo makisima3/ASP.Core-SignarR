@@ -15,7 +15,11 @@ namespace SignarRChat.SignarR.Controllers
         [HttpGet("{id}")]
         public async Task<JsonResult> GetFilesList(string id)
         {
-            var di = new DirectoryInfo(System.IO.Path.Combine(DirectoryPath, id));
+            var di = new DirectoryInfo(Path.Combine(DirectoryPath, id));
+            if (!di.Exists)
+            {
+                return Json(new string[0]);
+            }
             var files = di.GetFiles().Select(f => f.Name).ToArray();
 
             return Json(files);
@@ -42,18 +46,21 @@ namespace SignarRChat.SignarR.Controllers
             string guid = Guid.NewGuid().ToString();
             string dirName = Path.Combine(DirectoryPath, guid);
 
-            Directory.CreateDirectory(dirName);
-
-            foreach (var item in Request.Form.Files)
+            if (Request.Form.Files.Count > 0)
             {
-                string file = Path.Combine(dirName, item.FileName);
-                FileStream outputStream = System.IO.File.Open(file, FileMode.OpenOrCreate, FileAccess.Write);
-                Stream inputStream = item.OpenReadStream();
+                Directory.CreateDirectory(dirName);
 
-                await inputStream.CopyToAsync(outputStream);
+                foreach (var item in Request.Form.Files)
+                {
+                    string file = Path.Combine(dirName, item.FileName);
+                    FileStream outputStream = System.IO.File.Open(file, FileMode.OpenOrCreate, FileAccess.Write);
+                    Stream inputStream = item.OpenReadStream();
 
-                outputStream.Close();
-                inputStream.Close();
+                    await inputStream.CopyToAsync(outputStream);
+
+                    outputStream.Close();
+                    inputStream.Close();
+                }
             }
 
             return guid;
