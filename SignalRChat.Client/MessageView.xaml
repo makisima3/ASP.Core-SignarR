@@ -7,8 +7,8 @@
              mc:Ignorable="d" 
              d:DesignHeight="200" d:DesignWidth="500">
     <Grid>
-        <TextBlock x:Name="namePlace" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="40" Width="123" FontSize="22"/>
-        <TextBox x:Name="msgPlace" HorizontalAlignment="Left" IsReadOnly="True" Height="40" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="362" Margin="128,0,0,0"/>
+        <TextBlock x:Name="NamePlace" HorizontalAlignment="Left" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top" Height="40" Width="123" FontSize="22"/>
+        <TextBox x:Name="MessageTextPlace" HorizontalAlignment="Left" IsReadOnly="True" Height="40" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="362" Margin="128,0,0,0"/>
         <ScrollViewer Margin="0,50,183,0">
             <UniformGrid Name="ImagesPlace" Columns="2">
                 <TextBlock></TextBlock>

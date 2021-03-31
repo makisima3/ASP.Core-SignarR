@@ -29,8 +29,9 @@ namespace SignalRChat.Client
 
             if (!string.IsNullOrEmpty(receivedMessage.FilesGroupId))
             {
-                var fileNames = ServicesContainer.Instance.FileStorageService.GetFilesList(receivedMessage.FilesGroupId).Result;
-                fileNames.ForEach(file => messageView.AddFile(file));
+                ServicesContainer.Instance.FileStorageService
+                    .GetFilesList(receivedMessage.FilesGroupId)
+                    .ContinueWith(task => task.Result.ForEach(file => messageView.AddFile(file)));
             }
             MsgPlace.Items.Add(messageView);
         }

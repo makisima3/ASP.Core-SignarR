@@ -17,10 +17,10 @@ namespace SignalRChat.Client
         {
             _message = message;
             
-            namePlace.Text = message.Name;
-            msgPlace.Text = message.Message;
-            
             InitializeComponent();
+
+            NamePlace.Text = message.Name;
+            MessageTextPlace.Text = message.Message;
         }
 
         public void AddFile(string fileName)
