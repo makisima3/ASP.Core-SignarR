@@ -12,12 +12,7 @@ namespace SignarRChat.SignarR.Hubs
     {
         public async Task SendMessage(ChatMessage message)
         {
-            await Clients.All.SendAsync("ReciveMessage", message);
-        }
-
-        public async Task SendFiles(FileInfo[] infos)
-        {
-            await Clients.All.SendAsync("ReciveFiles", infos);
+            await Clients.All.SendAsync("ReceiveMessage", message);
         }
     }
 }
