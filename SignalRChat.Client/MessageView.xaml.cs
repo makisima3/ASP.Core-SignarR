@@ -16,7 +16,7 @@ namespace SignalRChat.Client
         public MessageView(ChatMessage message)
         {
             _message = message;
-            
+
             InitializeComponent();
 
             NamePlace.Text = message.Name;
@@ -27,50 +27,55 @@ namespace SignalRChat.Client
         {
             if (IsImage(fileName))
             {
-                var image = new Image
-                {
-                    Source = ServicesContainer.Instance.FileStorageService.DownloadImage(_message.FilesGroupId, fileName)
-                };
+                var image = Dispatcher.Invoke(() => { var image = new Image(); return image; });
 
-                ImagesPlace.Children.Add(image);
+                Dispatcher.Invoke(() => image.Source = ServicesContainer.Instance.FileStorageService.DownloadImage(_message.FilesGroupId, fileName));
+
+
+                Dispatcher.Invoke(() => ImagesPlace.Children.Add(image));
             }
             else
             {
-                var tb = new TextBlock
+                var tb = Dispatcher.Invoke(() => { var tb = new TextBlock(); return tb; });
+
+                Dispatcher.Invoke(() =>
                 {
-                    TextWrapping = TextWrapping.Wrap, 
-                    Text = fileName
-                };
-                tb.MouseDown += (s, e) => OnLinkText_Click(_message.FilesGroupId, fileName);
+                    tb.TextWrapping = TextWrapping.Wrap;
+                    tb.Text = fileName;
+                });
+
+                Dispatcher.Invoke(() => tb.MouseDown += (s, e) => OnLinkText_Click(_message.FilesGroupId, fileName));
+
+                Dispatcher.Invoke(() => FilesPlace.Children.Add(tb));
             }
         }
-        
+
         private void OnLinkText_Click(string id, string fileName)
         {
             var sfd = new SaveFileDialog()
             {
                 FileName = fileName
             };
-            
+
             var result = sfd.ShowDialog();
-            if (!result.HasValue || !result.Value) 
+            if (!result.HasValue || !result.Value)
                 return;
-            
+
             var output = File.OpenWrite(sfd.FileName);
-            var input = ServicesContainer.Instance.FileStorageService.DownloadFile(id,fileName).Result;
+            var input = ServicesContainer.Instance.FileStorageService.DownloadFile(id, fileName).Result;
 
             input.CopyTo(output);
 
             output.Close();
             input.Close();
         }
-        
+
         private bool IsImage(string fileName)
         {
             fileName = fileName.ToLower();
-            return fileName.EndsWith("jpg") || 
-                   fileName.EndsWith("png") || 
-                   fileName.EndsWith("jpeg") || 
+            return fileName.EndsWith("jpg") ||
+                   fileName.EndsWith("png") ||
+                   fileName.EndsWith("jpeg") ||
                    fileName.EndsWith("bmp");
         }
 

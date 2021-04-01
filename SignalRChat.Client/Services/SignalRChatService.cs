@@ -21,7 +21,7 @@ namespace SignalRChat.Client.Services
         public SignalRChatService(string hostname)
         {
             _connection = new HubConnectionBuilder().WithUrl($"{hostname}/chat").Build();
-            _connection.On<ChatMessage>("ReceiveMessage", (message) => OnMessageReceived?.Invoke(message));
+            _connection.On<ChatMessage>("ReceiveMessage", (message) => OnMessageReceived?.Invoke(message));         
         }
 
         public async Task Connect()

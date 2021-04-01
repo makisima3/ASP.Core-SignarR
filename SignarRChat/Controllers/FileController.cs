@@ -10,7 +10,7 @@ namespace SignarRChat.SignarR.Controllers
     [Route("files")]
     public class FileController : Controller
     {
-        const string DirectoryPath = @"D:\StaticStorage\ChatFiles";
+        string DirectoryPath = System.IO.File.ReadAllText("Path.txt");// @"C:\Users\maxim.aksenov\Desktop\ASPStorage";
 
         [HttpGet("{id}")]
         public async Task<JsonResult> GetFilesList(string id)
